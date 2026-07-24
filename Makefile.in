@@ -282,9 +282,6 @@ GST_BASE_MESON_ARGS := \
 
 GST_BASE_MESON_ARGS += \
 	-Dintrospection=disabled \
-	-Dgobject-cast-checks=disabled \
-	-Dglib-asserts=disabled \
-	-Dglib-checks=disabled \
 	-Dnls=disabled \
 	-Dexamples=disabled \
 	-Dtests=disabled \
@@ -350,9 +347,6 @@ GST_BAD_MESON_ARGS := \
 # Borrowed from proton-cachyos
 GST_BAD_MESON_ARGS += \
 	-Dintrospection=disabled \
-	-Dgobject-cast-checks=disabled \
-	-Dglib-asserts=disabled \
-	-Dglib-checks=disabled \
 	-Dnls=disabled \
 	-Dexamples=disabled \
 	-Dtests=disabled \
@@ -460,9 +454,6 @@ $(eval $(call rules-meson,gst_bad,aarch64,unix))
 
 GST_UGLY_MESON_ARGS := \
 	-Dauto_features=disabled \
-	-Dgobject-cast-checks=disabled \
-	-Dglib-asserts=disabled \
-	-Dglib-checks=disabled \
 	-Dnls=disabled \
 	-Dtests=disabled \
 	-Ddoc=disabled \
@@ -479,6 +470,8 @@ $(eval $(call rules-source,gst_ugly,$(SRCDIR)/gstreamer/subprojects/gst-plugins-
 $(eval $(call rules-meson,gst_ugly,i386,unix))
 $(eval $(call rules-meson,gst_ugly,x86_64,unix))
 $(eval $(call rules-meson,gst_ugly,aarch64,unix))
+
+default_pfx: gst_ugly
 
 ##
 ## FFmpeg
@@ -729,6 +722,8 @@ $(eval $(call rules-makedep,umuexe,i386))
 $(eval $(call rules-makedep,umuexe,x86_64))
 $(eval $(call rules-makedep,umuexe,aarch64))
 
+default_pfx: umuexe
+
 
 ##
 ## steam.exe
@@ -913,7 +908,7 @@ WINE_AUTOCONF_ARGS = \
   --with-gstreamer \
   --with-ffmpeg \
   --without-oss \
-  --with-libpcap \
+  --with-pcap \
   --disable-tests
 
 WINE_x86_64_AUTOCONF_ARGS = \
@@ -1104,6 +1099,8 @@ $(OBJ)/.vkd3d-i386-post-build: $(OBJ)/.wine-$(HOST_ARCH)-tools
 	cp $(VKD3D_i386_DST)/bin/libvkd3d-shader-1.dll $(VKD3D_i386_LIBDIR)/vkd3d/i386-windows
 	cp $(VKD3D_i386_DST)/bin/libvkd3d-utils-1.dll $(VKD3D_i386_LIBDIR)/vkd3d/i386-windows
 	touch $@
+
+default_pfx: vkd3d
 
 
 ##
@@ -1700,7 +1697,7 @@ endif
 ## default_pfx
 ##
 
-default_pfx: wine gst_good gst_bad gst_ugly gst_libav gst_plugins_rs lsteamclient steamexe vrclient wineopenxr $(WINEOPENXR64_JSON) dxvk dxvk-nvapi vkd3d-proton
+default_pfx: wine gst_good gst_bad gst_libav gst_plugins_rs lsteamclient steamexe vrclient wineopenxr $(WINEOPENXR64_JSON) dxvk dxvk-nvapi vkd3d-proton
 	find $(DST_LIBDIR)/wine -type f -execdir chmod a-w '{}' '+'
 	rm -rf $(abspath $(DIST_PREFIX))
 	rm -rf $(abspath $(DIST_PREFIX_ARM64))
@@ -1793,6 +1790,9 @@ $(OBJ)/.protonfixes-aarch64-dist:
 	mkdir -p $(PROTONFIXES_TARGET)
 	rsync --delete -arx $(PROTONFIXES_aarch64_DST)/ $(PROTONFIXES_TARGET)
 	touch $@
+
+all-dist: protonfixes
+
 
 ##
 ## proton(.py), filelock.py, etc.
