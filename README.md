@@ -116,6 +116,7 @@ TLDR: I may ignore your PR if I have suspicion that it was written by an LLM.
 | | `WAYLANDDRV_SSD=0` | Disable winewayland server side decorations implementation for debugging. |
 | | `WAYLANDDRV_IME=1` | Enables IME support. It is only disabled by default because many games don't even try to support IME properly, which causes issues for wayland. However, please enable it if you know that you need this feature and the game supports it. |
 | | `WAYLANDDRV_SHORTCUT_INHIBIT=1` | Inhibit keyboard shortcuts on fullscreen apps. I use this on KDE when playing Overwatch to avoid KRunner from opening when I press `alt+space` |
+| | `WAYLANDDRV_RAWINPUT=` | Adjust rawinput sensitivity, you can use any value that is in the positive real numbers. Pass in 0 to disable rawinput completely. Primarily intended for debugging. |
 | | `DXVK_NO_HDR=1`    | Disables automatic HDR support for debugging. |
 
 Please check the [original Proton README](README-ORIG.md) for the launch options provided by upstream Proton.
