@@ -90,3 +90,6 @@
 [submodule "libpcap"]
 	path = libpcap
 	url = https://github.com/the-tcpdump-group/libpcap.git
+[submodule "dxvk-igdext"]
+	path = dxvk-igdext
+	url = https://github.com/GameTechDev/dxvk-igdext
