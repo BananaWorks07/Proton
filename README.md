@@ -32,7 +32,7 @@
     - xdg-popup support
     - Explicit fullscreen support
     - Hack to move windows entirely on screen (resolves being unable to interact with portions of windows)
-    - Wayland client surface caching (fixes DMABUF modifier feedback loops when playing some Vulkan games with direct scanout)
+    - Wayland client surface caching (Upstreamed in wine 11.16?, thanks Rémi Bernon)
     - Various bug fixes
     - All of this is being upstreamed right now! (I'll add links to MRs later)
     - Not Planned: Cross Process Rendering, Client Surface Composition (afaik these are being worked on upstream)
@@ -57,7 +57,7 @@ The numbers in each box represent the version number of each protocol.
 | `wl_subcompositor` | 1 | &nbsp; | &nbsp; | &nbsp; |
 | `xdg_wm_base`   | 3 | &nbsp; | &nbsp; | `xdg_popup::reposition` |
 | `wl_shm`        | 1 | &nbsp; | &nbsp; | &nbsp; |
-| `wl_output`     | 3 | &nbsp; | &nbsp; | `wl_output::release` |
+| `wl_output`     | 4 | &nbsp; | &nbsp; | `wl_output::name` |
 | `wl_fixes`      | &nbsp; | &nbsp; | 2 | `wl_fixes::ack_global_remove` | 
 | `zxdg_output_manager_v1` | &nbsp; | 2 | 3 | It may become a requirement later (when a wl_output is present?) |
 | `wl_data_device_manager` | 2 | &nbsp; | &nbsp; | If you want clipboard support of any kind |
