@@ -1752,6 +1752,7 @@ class Session:
         self.check_environment("PROTON_PREFER_SDL", "sdlinput")
         self.check_environment("PROTON_USE_SDL", "sdlinput")
         self.check_environment("PROTON_NATIVE_AGS", "nativeags")
+        self.check_environment("PROTON_NATIVE_STEAM", "nativesteam")
 
         if "nofsync" in self.compat_config:
             self.env.pop("WINEFSYNC", "")
@@ -2000,6 +2001,10 @@ class Session:
             self.dlloverrides["atidxx64"] = "b"
             self.dlloverrides["amd_ags_x64"] = "n"
             self.env["DXVK_NO_UE4_WORKAROUND"] = "1"
+
+        if "nativesteam" in self.compat_config:
+            del self.dlloverrides["steam.exe"]
+            self.env["PROTON_DISABLE_LSTEAMCLIENT"] = "1"
 
         # NVIDIA software may check for the "DriverStore" by querying the
         # NGXCore\NGXPath registry key via `D3DDDI_QUERYREGISTRY_SERVICEKEY` for
