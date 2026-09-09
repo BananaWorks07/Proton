@@ -995,7 +995,7 @@ class CompatData:
                 os.symlink("/", self.prefix_dir + "/dosdevices/z:")
 
             # collect configuration info
-            steamdir = os.environ["STEAM_COMPAT_CLIENT_INSTALL_PATH"]
+            steam_linux_path = os.environ["STEAM_COMPAT_CLIENT_INSTALL_PATH"]
 
             use_wined3d = "wined3d" in g_session.compat_config
             use_dxvk_dxgi = not use_wined3d and \
@@ -1053,10 +1053,10 @@ class CompatData:
                 CURRENT_PREFIX_VERSION,
                 g_proton.fonts_dir,
                 g_proton.lib_dir,
-                steamdir,
-                getmtimestr(steamdir, 'legacycompat', 'steamclient.dll'),
-                getmtimestr(steamdir, 'legacycompat', 'steamclient64.dll'),
-                getmtimestr(steamdir, 'legacycompat', 'Steam.dll'),
+                steam_linux_path,
+                getmtimestr(steam_linux_path, 'legacycompat', 'steamclient.dll'),
+                getmtimestr(steam_linux_path, 'legacycompat', 'steamclient64.dll'),
+                getmtimestr(steam_linux_path, 'legacycompat', 'Steam.dll'),
                 g_proton.default_pfx_dir,
                 getmtimestr(g_proton.default_pfx_dir, 'system.reg'),
                 str(use_wined3d),
@@ -1088,17 +1088,17 @@ class CompatData:
 
             with open(self.tracked_files_file, "a") as tracked_files:
                 #copy steam files into place
-                steam_dir = "drive_c/Program Files (x86)/Steam/"
-                makedirs(self.prefix_dir + steam_dir)
+                steam_in_pfx_dir = "drive_c/Program Files (x86)/Steam/"
+                makedirs(self.prefix_dir + steam_in_pfx_dir)
                 filestocopy = [("steamclient.dll", "steamclient.dll"),
                                ("steamclient64.dll", "steamclient64.dll"),
                                ("GameOverlayRenderer64.dll", "GameOverlayRenderer64.dll"),
                                ("SteamService.exe", "steam.exe"),
                                ("Steam.dll", "Steam.dll")]
                 for (src,tgt) in filestocopy:
-                    srcfile = steamdir + '/legacycompat/' + src
+                    srcfile = steam_linux_path + '/legacycompat/' + src
                     if os.path.isfile(srcfile):
-                        try_copy(srcfile, steam_dir + tgt, prefix=self.prefix_dir, track_file=tracked_files, link_debug=True)
+                        try_copy(srcfile, steam_in_pfx_dir + tgt, prefix=self.prefix_dir, track_file=tracked_files, link_debug=True)
 
                 filestocopy = [("steamclient64.dll", "steamclient64.dll"),
                                ("GameOverlayRenderer.dll", "GameOverlayRenderer.dll"),
@@ -1106,16 +1106,16 @@ class CompatData:
                 for (src,tgt) in filestocopy:
                     srcfile = g_proton.path(src)
                     if os.path.isfile(srcfile):
-                        try_copy(srcfile, steam_dir + tgt, prefix=self.prefix_dir, track_file=tracked_files, link_debug=True)
+                        try_copy(srcfile, steam_in_pfx_dir + tgt, prefix=self.prefix_dir, track_file=tracked_files, link_debug=True)
 
                 try:
-                    self.create_symlink(self.prefix_dir + steam_dir + 'appcache', steamdir + '/appcache')
+                    self.create_symlink(self.prefix_dir + steam_in_pfx_dir + 'appcache', steam_linux_path + '/appcache')
                 except: pass
 
                 # CW Bug 19152. IL-2 Sturmovik: Cliffs of Dover Blitz Edition needs user's localconfig.vdf
                 if os.environ.get("SteamGameId", 0) == "754530":
-                    srcdir = os.path.join(steamdir, 'userdata')
-                    dstdir = os.path.join(self.prefix_dir, steam_dir, 'userdata')
+                    srcdir = os.path.join(steam_linux_path, 'userdata')
+                    dstdir = os.path.join(self.prefix_dir, steam_in_pfx_dir, 'userdata')
                     # figuring out the current user is hard, so copy the config for all users
                     for userid in os.listdir(srcdir):
                         srcvdf = os.path.join(srcdir, userid, 'config', 'localconfig.vdf')
