@@ -1852,6 +1852,7 @@ class Session:
                 "1051200", #Trover Saves the Universe
                 "285190", #Warhammer 40,000: Dawn of War III
                 "1133320", #Westworld Awakening
+                "1222700", #A Way Out
                 ]:
             self.env["OPENSSL_ia32cap"] = "~0x20000000"
 
